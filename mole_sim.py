@@ -11,6 +11,7 @@ def custom_sort(x):
 class Mole:
     # Age of mole
     age = 1
+    fitness = np.random.normal()
 
     # Status of mole
     alive = True
@@ -57,7 +58,9 @@ class Juvenile(Mole):
 
     def mature(self):
         if (self.age > self.maturity_age):
-            return Worker()
+            worker = Worker()
+            worker.fitness = self.fitness
+            return worker
         else:
             return self
 
@@ -81,10 +84,11 @@ class Worker(Mole):
     def become_queen(self):
         queen = Queen()
         queen.age = self.age
+        queen.fitness = self.fitness
         return queen
 
     def generate_resource(self):
-        return np.random.poisson(self.resource_production_rate)
+        return 1 / (1 + np.exp(-self.fitness)) * np.random.poisson(self.resource_production_rate)
 
 class Colony:
     population = []
@@ -110,15 +114,17 @@ class Colony:
             mole.update()
             if (mole.alive):
                 if (mole.type == 'Queen'):
-                    self.add_pups(mole.reproduce())
+                    self.add_pups(mole.reproduce(),mole.fitness)
                 elif (mole.type == 'Juvenile'):
                     self.population[idx] = mole.mature()
                 elif (mole.type == 'Worker'):
                     self.add_resource(mole.generate_resource())
 
-    def add_pups(self, pups):
+    def add_pups(self, pups, fitness):
         for i in range(0,pups):
-            self.population.append(Juvenile())
+            pup = Juvenile()
+            pup.fitness = fitness + np.random.normal()
+            self.population.append(pup)
 
     def add_resource(self,resource):
         self.resource_stockpile = self.resource_stockpile + resource
@@ -137,7 +143,7 @@ class Colony:
             if (not self.has_worker()):
                 self.kill_colony()
             else:
-                idx = self.get_random_worker_index()
+                idx = self.get_worker_index_by_fitness()
                 self.population[idx] = self.population[idx].become_queen()
 
     def has_queen(self):
@@ -147,16 +153,21 @@ class Colony:
             return True
 
     def has_worker(self):
-        if (len([mole for mole in self.population if mole.type == 'Worker']) == 0):
-            return False
-        else:
+        if (len([mole for mole in self.population if mole.type == 'Worker']) > 1):
             return True
+        else:
+            return False
 
     def get_random_worker_index(self):
         while(True):
             idx = np.random.randint(len(self.population))
             if (self.population[idx].type == 'Worker'):
                 return idx
+
+    def get_worker_index_by_fitness(self):
+        fitness_matrix = np.matrix([[mole.type for mole in self.population],[mole.fitness for mole in self.population]])
+        idx = np.argmin(fitness_matrix[:,1][fitness_matrix[:,0] == 'Worker'])
+        return idx
 
     def get_number_of_workers(self):
         return len([mole for mole in self.population if mole.type == 'Worker'])

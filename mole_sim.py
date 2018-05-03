@@ -45,9 +45,6 @@ class Juvenile(Mole):
         return self
 
 class Worker(Mole):
-    food_collected = 0
-
-    food_collection_rate = 3 # TODO
     food_required = 2 # TODO
     life_expectancy = 50 # TODO
 
@@ -56,7 +53,6 @@ class Worker(Mole):
         if (self.age > self.life_expectancy):
             self.kill()
             return
-        self.food_collected = np.random.poisson(self.food_collection_rate)
 
     def become_queen(self):
         queen = Queen()
@@ -69,6 +65,7 @@ class Colony:
 
     pop_capacity = 10 # TODO
     food_capacity = 100 # TODO
+    food_collection_rate = 10 # TODO
 
     def __str__(self):
         s = ''
@@ -90,8 +87,6 @@ class Colony:
             mole.update()
             if (type(mole).__name__ == 'Queen'):
                 self.produce_new_borns(mole.new_borns)
-            elif (type(mole).__name__ == 'Worker'):
-                self.supply_food(mole.food_collected)
             elif (type(mole).__name__ == 'Juvenile'):
                 self.population[idx] = mole.mature()
 
@@ -102,7 +97,7 @@ class Colony:
             new_borns = new_borns - 1
 
     def supply_food(self,food_collected):
-        self.food_stockpile = self.food_stockpile + food_collected
+        self.food_stockpile = self.food_stockpile + self.food_collection_rate*self.get_number_of_workers()**0.5
 
     def consume_food(self):
         self.population.sort(key = lambda x : x.age)
@@ -141,6 +136,9 @@ class Colony:
             idx = np.random.randint(len(self.population))
             if (type(self.population[idx]).__name__ == 'Worker'):
                 return idx
+
+    def get_number_of_workers(self):
+        return len([mole for mole in self.population if type(mole).__name__ == 'Worker'])
 
     def kill_colony(self):
         for mole in self.population:

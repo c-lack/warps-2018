@@ -1,0 +1,9 @@
+# ignore latex compilation file
+*.pdf
+*.log
+*.aux
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz

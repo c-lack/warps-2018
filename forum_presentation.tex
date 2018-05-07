@@ -2,15 +2,41 @@
 \usetheme{default}
 \usepackage{graphicx}
 \usecolortheme{crane}
-\definecolor{codegreen}{rgb}{0,0.4,0}
-\setbeamertemplate{itemize item}{\color{codegreen}$\blacktriangleright$}
-\setbeamertemplate{itemize subitem}{\color{codegreen}$\blacktriangleright$}
+\definecolor{codeyellow}{rgb}{0.8,0.6,0}
+\setbeamertemplate{itemize item}{\color{codeyellow}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{codeyellow}$\blacktriangleright$}
 
 \author{Chris Davis, Robert Gowers, Nada Jankovicova, Cameron Lack, Benjamin Miller}
-\title{Dynamics of Eusocial Mole Rats}
+\title{Dynamics of Eusocial Mole-Rats}
 \begin{document}
 	\begin{frame}
 		\titlepage
+	\end{frame}
+	\begin{frame}
+	\frametitle{What is Eusociality?}
+	\begin{itemize}
+	\item Species lives in a colony with a division of labour between working and reproduction.
+	\item Working includes tasks such as gathering food, protecting the colony, expanding the colony and feeding the young.
+	\item The most well-known eusocial species are insects, however there two species of eusocial mole rat.
+	\end{itemize}
+	
+	\end{frame}
+	\begin{frame}
+	\frametitle{Naked Mole-Rats}
+	\begin{itemize}
+	\item Naked mole-rats have a single queen in each colony of around 20-300 members.
+	\item They live for up to 30 years, with the probability of death seemingly unaffected by age.
+	\end{itemize}
+	\end{frame}
+	\begin{frame}
+	\frametitle{The Model}
+	\begin{itemize}
+	\item Discrete time stochastic model where each time step is a quarter of a year.
+	\item Population split into three parts: queens, workers and juveniles.
+	\item Queens reproduce, workers gather resources, juveniles mature into workers.
+	\item If there are insufficient resources, members of the colony die.
+	\item If the queen dies, a worker assumes the role of queen.
+	\end{itemize}
 	\end{frame}
 	
 \end{document}

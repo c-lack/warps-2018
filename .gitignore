@@ -1,5 +1,4 @@
 # ignore latex compilation file
-*.pdf
 *.log
 *.aux
 *.nav

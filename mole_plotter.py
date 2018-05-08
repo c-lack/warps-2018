@@ -7,7 +7,7 @@ ptype = sys.argv[1]
 
 def mole_pop_plot():
 	cells = np.loadtxt('population_history.txt')
-	with PdfPages('mole_pop_history.pdf') as pdf:
+	with PdfPages('figures/mole_pop_history.pdf') as pdf:
 		fig,ax = plt.subplots()
 		# create discrete colormap
 		cmap = plt.cm.get_cmap('viridis', 4) 
@@ -21,7 +21,7 @@ def mole_pop_plot():
 
 def mole_resource_plot():
 	resource = np.loadtxt('resource_history.txt')
-	with PdfPages('mole_resource_history.pdf') as pdf:
+	with PdfPages('figures/mole_resource_history.pdf') as pdf:
 		plt.plot(resource)
 		plt.ylabel('Resources (au)')
 		plt.xlabel('Time (Quarter)')

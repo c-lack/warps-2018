@@ -74,7 +74,7 @@ class Worker(Mole):
     resource_consumption = 2 # TODO
 
     # rate of resource production
-    resource_production_rate = 5 # TODO
+    resource_production_rate = 27 # TODO
 
     def update(self):
         self.age = self.age + 1
@@ -110,6 +110,7 @@ class Colony:
             self.population.append(Juvenile())
 
     def update_population(self):
+        worker_count = 0
         for idx, mole in enumerate(self.population):
             mole.update()
             if (mole.alive):
@@ -118,7 +119,8 @@ class Colony:
                 elif (mole.type == 'Juvenile'):
                     self.population[idx] = mole.mature()
                 elif (mole.type == 'Worker'):
-                    self.add_resource(mole.generate_resource())
+                    self.add_resource((2**(1-worker_count))*mole.generate_resource())
+                    worker_count = worker_count + 1
 
     def add_pups(self, pups, fitness):
         for i in range(0,pups):

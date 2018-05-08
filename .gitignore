@@ -7,3 +7,6 @@
 *.snm
 *.toc
 *.synctex.gz
+
+# ignore python compilation code
+*.pyc

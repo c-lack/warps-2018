@@ -15,10 +15,14 @@ food = np.zeros(T)
 for t in range(0,T):
     col.update_population()
     col.remove_dead()
-    col.consume_food()
+    col.consume_resource()
     col.remove_dead()
     col.ensure_queen()
-    food[t] = col.food_stockpile
+    food[t] = col.resource_stockpile
+    if len(col.population) > np.size(cells[:,1]):
+    	# print('Too many mole rats!')
+    	new = len(col.population)-np.size(cells[:,1]) # number of new rows needed
+    	cells = np.append(cells,np.zeros([new,T])-1,axis=0)
     for i in range(0,len(col.population)):
     	cells[i,t] = mole_sim.custom_sort(col.population[i])
 
@@ -31,3 +35,4 @@ plt.plot(range(T),food)
 plt.show()
 
 np.savetxt('population_history.txt',cells,fmt='%i')
+np.savetxt('resource_history.txt',food,fmt='%i')
